@@ -1,0 +1,15 @@
+os: linux
+dist: trusty
+sudo: required
+services:
+  - docker
+
+script:
+  # set docker tag based on build jobs.
+  - DOCKER_TAG=hunspell-bdict-wasm:${TRAVIS_TAG:-$TRAVIS_BUILD_NUMBER}
+  - tput setaf 2; echo building docker image tagged as $DOCKER_TAG at $(pwd)
+  - sudo docker build --tag $DOCKER_TAG . --build-arg TAG=60.0.3112.44
+  - |
+    if [[ ! -z "${TRAVIS_TAG}" ]]; then
+      tput setaf 2; echo this build is tagged versioned build, pushing into github-release
+    fi

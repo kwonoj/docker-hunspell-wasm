@@ -26,7 +26,8 @@ jobs:
           name: Copy artifacts
           command: |
             ARTIFACT_DIR=~/docker-hunspell-bdict-wasm/artifacts
-            mkdir $ARTIFACT_DIR
             docker cp hunspell-bdict-wasm_0.1.$CIRCLE_BUILD_NUM:/out $ARTIFACT_DIR
+            tar -zcvf ./hunspell-bdict-wasm_0.1.$CIRCLE_BUILD_NUM.tar.gz artifacts
+            cp *.tar.gz $ARTIFACT_DIR
       - store_artifacts:
           path: ~/docker-hunspell-bdict-wasm/artifacts

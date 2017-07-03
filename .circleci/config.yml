@@ -27,6 +27,9 @@ jobs:
           command: |
             ARTIFACT_DIR=~/docker-hunspell-bdict-wasm/artifacts
             docker cp hunspell-bdict-wasm_0.1.$CIRCLE_BUILD_NUM:/out $ARTIFACT_DIR
+            # File copied from docker container has root access only, modify permission
+            sudo chmod -R go+wr artifacts
+            # Generate archive for convinience
             tar -zcvf ./hunspell-bdict-wasm_0.1.$CIRCLE_BUILD_NUM.tar.gz artifacts
             cp *.tar.gz $ARTIFACT_DIR
       - store_artifacts:

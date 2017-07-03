@@ -29,8 +29,6 @@ RUN mkdir -p /out/wasm && mkdir /out/js && mkdir /out/html
 RUN autoreconf -vfi && emconfigure ./configure && emmake make
 
 # Build for each target, WASM / JS / HTML (HTML is for testing)
-RUN ./build.sh -s WASM=1 -o /out/wasm/hunspell.js
-RUN ./build.sh -o /out/js/hunspell.js
-RUN ./build.sh -o /out/html/hunspell.html
-
-CMD echo build completed
+CMD ./build.sh -s WASM=1 -o /out/wasm/hunspell.js && \
+  ./build.sh -o /out/js/hunspell.js && \
+  ./build.sh -o /out/html/hunspell.html

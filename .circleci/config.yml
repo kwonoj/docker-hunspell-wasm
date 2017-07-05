@@ -19,7 +19,7 @@ jobs:
           name: Build wasm
           command: |
             # Build docker image, specify commit sha of hunspell
-            docker build --build-arg BUILD_SHA=e86aab1345872d7de469a3ebaa294241f8de8a50 -t hunspell-bdict-wasm_0.1.$CIRCLE_BUILD_NUM .
+            docker build --build-arg BUILD_SHA=f1e87bf8157083d2e0ff58f38db81ac21efeabe8 -t hunspell-bdict-wasm_0.1.$CIRCLE_BUILD_NUM .
             # Run built docker image, specify container name same as image name
             docker run --name hunspell-bdict-wasm_0.1.$CIRCLE_BUILD_NUM -t hunspell-bdict-wasm_0.1.$CIRCLE_BUILD_NUM
       - run:

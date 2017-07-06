@@ -1,10 +1,17 @@
-# it is important call in forms of ./build.sh -o outputfilePath ...resg
+### Simple script wraps invocation of emcc compiler, also prepares preprocessor
+### for wasm binary lookup in node.js
+
+# It is important call in forms of ./build.sh -o outputfilePath ...rest,
+# as we'll pick up output filename from parameter
 outputFilename=$(basename $2)
 
-# injecting -o option's filename.wasm into preprocessor
+# Injecting -o option's filename.wasm into preprocessor.
+# Only wasm target will specify --pre-js option.
 sed -i -e "s/___wasm_binary_name___/${outputFilename%.*}.wasm/g" ./preprocessor.js
 
-# invokce emscripten to build binary targets configured via dockerfile.
+echo "building binary for $@"
+
+# invoke emscripten to build binary targets. Check Dockerfile for build targets.
 em++ \
 -O3 \
 -Oz \
@@ -14,5 +21,4 @@ em++ \
 -s ALLOW_MEMORY_GROWTH=1 \
 -s EXPORTED_FUNCTIONS="['_Hunspell_create', '_Hunspell_destroy', '_Hunspell_spell', '_Hunspell_suggest']" \
 ./src/hunspell/.libs/libhunspell-1.6.a \
---pre-js ./preprocessor.js \
 $@

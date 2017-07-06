@@ -4,6 +4,8 @@ jobs:
     working_directory: ~/docker-hunspell-bdict-wasm
     docker:
       - image: buildpack-deps:trusty
+    environment:
+      - HUNSPELL_BDICT_SHA: "f1e87bf8157083d2e0ff58f38db81ac21efeabe8"
     steps:
       - setup_remote_docker
       - checkout
@@ -19,7 +21,7 @@ jobs:
           name: Build wasm
           command: |
             # Build docker image, specify commit sha of hunspell
-            docker build --build-arg BUILD_SHA=e86aab1345872d7de469a3ebaa294241f8de8a50 -t hunspell-bdict-wasm_0.1.$CIRCLE_BUILD_NUM .
+            docker build --build-arg BUILD_SHA=$HUNSPELL_BDICT_SHA -t hunspell-bdict-wasm_0.1.$CIRCLE_BUILD_NUM .
             # Run built docker image, specify container name same as image name
             docker run --name hunspell-bdict-wasm_0.1.$CIRCLE_BUILD_NUM -t hunspell-bdict-wasm_0.1.$CIRCLE_BUILD_NUM
       - run:
@@ -30,7 +32,7 @@ jobs:
             # File copied from docker container has root access only, modify permission
             sudo chmod -R go+wr artifacts
             # Generate archive for convinience
-            tar -zcvf ./hunspell-bdict-wasm_0.1.$CIRCLE_BUILD_NUM.tar.gz artifacts
+            tar -zcvf ./hunspell-bdict-wasm_$CIRCLE_BUILD_NUM-$HUNSPELL_BDICT_SHA.tar.gz artifacts
             cp *.tar.gz $ARTIFACT_DIR
       - store_artifacts:
           path: ~/docker-hunspell-bdict-wasm/artifacts

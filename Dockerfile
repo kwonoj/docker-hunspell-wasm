@@ -1,19 +1,13 @@
 FROM ojkwon/arch-emscripten:752ef5c
 
-# Configure buildtime argument
-ARG BUILD_SHA
-
-# Setup output path
+# Setup output / build source path
 RUN mkdir -p /out/wasm && mkdir /out/js
+RUN mkdir /hunspell
 
-# Clone repo, copy build script from host, set workdir
-RUN git clone https://github.com/kwonoj/hunspell
+# Copy source with build script from host, set workdir
+COPY ./hunspell /hunspell
 COPY ./script/build.sh ./script/preprocessor* /hunspell/
 WORKDIR /hunspell
-
-# Checkout custom branch's sha to build, injected when build time
-RUN echo building commit ${BUILD_SHA} && git checkout $BUILD_SHA
-RUN git show --summary
 
 # Configure & make via emscripten
 RUN echo running autoconf && autoreconf -vfi

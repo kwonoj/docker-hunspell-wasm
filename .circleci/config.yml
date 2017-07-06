@@ -36,7 +36,7 @@ jobs:
             # File copied from docker container has root access only, modify permission
             sudo chmod -R go+wr artifacts
             # Echo sha1
-            find . -type f -exec sha1sum {} \;
+            find artifacts -type f -exec sha1sum {} \;
             # Generate archive for convinience
             tar -zcvf ./hunspell-bdict-wasm_$CIRCLE_BUILD_NUM-$HUNSPELL_BDICT_SHA.tar.gz artifacts
             cp *.tar.gz $ARTIFACT_DIR

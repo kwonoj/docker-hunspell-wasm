@@ -11,7 +11,6 @@
 if (typeof module !== 'undefined' && module.exports) {
   var Module = {};
   if (typeof __dirname === "string") {
-    //___wasm_binary_name___ is being replaced build time via build.sh
-    Module["wasmBinaryFile"] = require('path').join(__dirname, "___wasm_binary_name___.wasm");
+    Module["wasmBinaryFile"] = require('path').join(__dirname, "hunspell.wasm");
   }
 }

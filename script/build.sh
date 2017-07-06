@@ -5,9 +5,9 @@
 # as we'll pick up output filename from parameter
 outputFilename=$(basename $2)
 
-# Injecting -o option's filename.wasm into preprocessor.
-# Only wasm target will specify --pre-js option.
-sed -i -e "s/___wasm_binary_name___/${outputFilename%.*}.wasm/g" ./preprocessor.js
+# Injecting -o option's filename into each targets preprocessor.
+sed -i -e "s/___wasm_binary_name___/${outputFilename%.*}/g" ./preprocessor-wasm.js
+sed -i -e "s/___asm_memfile_name___/${outputFilename%.*}/g" ./preprocessor-asm.js
 
 echo "building binary for $@"
 
@@ -16,9 +16,11 @@ em++ \
 -O3 \
 -Oz \
 --llvm-lto 1 \
---closure 1 \
 -s NO_EXIT_RUNTIME=1 \
 -s ALLOW_MEMORY_GROWTH=1 \
 -s EXPORTED_FUNCTIONS="['_Hunspell_create', '_Hunspell_destroy', '_Hunspell_spell', '_Hunspell_suggest']" \
 ./src/hunspell/.libs/libhunspell-1.6.a \
 $@
+
+# disable closure optimization for now
+# --closure 1 \

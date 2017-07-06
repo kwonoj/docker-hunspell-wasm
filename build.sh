@@ -14,5 +14,4 @@ em++ \
 -s ALLOW_MEMORY_GROWTH=1 \
 -s EXPORTED_FUNCTIONS="['_Hunspell_create', '_Hunspell_destroy', '_Hunspell_spell', '_Hunspell_suggest']" \
 ./src/hunspell/.libs/libhunspell-1.6.a \
---pre-js ./preprocessor.js \
 $@

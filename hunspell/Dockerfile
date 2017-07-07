@@ -7,7 +7,7 @@ RUN mkdir -p /out && mkdir /hunspell
 WORKDIR /hunspell
 
 # Copy source with build script from host, set workdir
-COPY ./hunspell ./script/preprocessor* /hunspell/
+COPY ./hunspell-bdict ./preprocessor* /hunspell/
 
 # Configure & make via emscripten
 RUN echo running autoconf && autoreconf -vfi

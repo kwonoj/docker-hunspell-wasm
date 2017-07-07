@@ -29,6 +29,7 @@ CMD em++ \
     -s WASM=1 \
     -s NO_EXIT_RUNTIME=1 \
     -s ALLOW_MEMORY_GROWTH=1 \
+    -s MODULARIZE=1 \
     -s EXPORTED_FUNCTIONS="['_Hunspell_create', '_Hunspell_destroy', '_Hunspell_spell', '_Hunspell_suggest']" \
     ./src/hunspell/.libs/libhunspell-1.6.a \
     -o /out/hunspell.js

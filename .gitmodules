@@ -1,4 +1,4 @@
-[submodule "hunspell"]
-	path = hunspell
+[submodule "hunspell/hunspell-bdict"]
+	path = hunspell/hunspell-bdict
 	url = https://github.com/kwonoj/hunspell
 	branch = feat-bdict-1.6.1

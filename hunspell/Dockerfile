@@ -1,13 +1,14 @@
 FROM ojkwon/arch-emscripten:752ef5c
 
 # Setup output / build source path
-RUN mkdir -p /out && mkdir /hunspell
+RUN mkdir -p /out && mkdir -p /hunspell/asset
 
 # Set workdir
 WORKDIR /hunspell
 
 # Copy source with build script from host, set workdir
 COPY ./hunspell-bdict ./preprocessor* /hunspell/
+COPY ./allcaps* /hunspell/asset/
 
 # Configure & make via emscripten
 RUN echo running autoconf && autoreconf -vfi
@@ -30,6 +31,7 @@ CMD em++ \
     -s NO_EXIT_RUNTIME=1 \
     -s ALLOW_MEMORY_GROWTH=1 \
     -s MODULARIZE=1 \
+    --embed-file asset \
     -s EXPORTED_FUNCTIONS="['_Hunspell_create', '_Hunspell_destroy', '_Hunspell_spell', '_Hunspell_suggest']" \
     ./src/hunspell/.libs/libhunspell-1.6.a \
     -o /out/hunspell.js

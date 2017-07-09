@@ -7,12 +7,16 @@
   * by default, it always look for current running directory.
   */
 
- //using module.exports to detect node environment
- if (typeof module !== 'undefined' && module.exports) {
-   var Module = {};
-   if (typeof __dirname === "string") {
-     Module["locateFile"] = function (fileName) {
-       return require('path').join(__dirname, fileName);
-     }
-   }
- }
+//using module.exports to detect node environment
+if (typeof module !== 'undefined' && module.exports) {
+  var Module = {};
+  if (typeof __dirname === "string") {
+    Module["locateFile"] = function (fileName) {
+      return require('path').join(__dirname, fileName);
+    }
+  }
+  // expose filesystem
+  Module['preRun'] = function () {
+    Module.FS = FS;
+  };
+}

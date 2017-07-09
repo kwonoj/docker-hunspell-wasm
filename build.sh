@@ -18,7 +18,8 @@ em++ \
 -s NO_EXIT_RUNTIME=1 \
 -s ALLOW_MEMORY_GROWTH=1 \
 -s MODULARIZE=1 \
--s EXPORTED_FUNCTIONS="['_Hunspell_create', '_Hunspell_destroy', '_Hunspell_spell', '_Hunspell_suggest']" \
+-s FORCE_FILESYSTEM=1 \
+-s EXPORTED_FUNCTIONS="['_Hunspell_create', '_Hunspell_destroy', '_Hunspell_spell', '_Hunspell_suggest', 'Hunspell_free_list']" \
 ./src/hunspell/.libs/libhunspell-1.6.a \
 $@
 

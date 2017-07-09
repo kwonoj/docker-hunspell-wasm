@@ -14,8 +14,30 @@ if (typeof module !== 'undefined' && module.exports) {
     //___wasm_binary_name___ is being replaced build time via build.sh
     Module["wasmBinaryFile"] = require('path').join(__dirname, "___wasm_binary_name___.wasm");
   }
-  // expose filesystem
-  Module['preRun'] = function () {
+
+  // expose filesystem api
+  Module["preRun"] = function () {
     Module.FS = FS;
   };
+
+  var isInitialized = false;
+
+  // expose initializeRuntime to allow wait runtime init
+  Module["initializeRuntime"] = function () {
+    if (isInitialized) {
+      return Promise.resolve(true);
+    }
+
+    return new Promise(function (resolve, reject) {
+      var timeoutId = setTimeout(function () {
+        resolve(false);
+      }, 3000);
+
+      Module["onRuntimeInitialized"] = function () {
+        clearTimeout(timeoutId);
+        isInitialized = true;
+        resolve(true);
+      }
+    });
+  }
 }

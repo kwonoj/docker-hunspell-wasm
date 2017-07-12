@@ -30,7 +30,7 @@ jobs:
             # Build docker image, specify commit sha of hunspell
             docker build -t hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM --build-arg BRANCH=$BRANCH --build-arg TARGET=$TARGET .
             # Run built docker image, specify container name same as image name
-            docker run --env TARGET=$TARGET --name hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM -t hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM
+            docker run --name hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM -t hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM /bin/bash -l -c "./build.sh -o /out/$BRANCH/$TARGET/hunspell.js -s WASM=1"
             # Copy build output
             docker cp hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM:/out $ARTIFACT_DIR/
       - run:
@@ -41,7 +41,7 @@ jobs:
             # Build docker image, specify commit sha of hunspell
             docker build -t hunspell-dict-asm_0.1.$CIRCLE_BUILD_NUM --build-arg BRANCH=$BRANCH --build-arg TARGET=$TARGET .
             # Run built docker image, specify container name same as image name
-            docker run --env TARGET=$TARGET --name hunspell-dict-asm_0.1.$CIRCLE_BUILD_NUM -t hunspell-dict-asm_0.1.$CIRCLE_BUILD_NUM
+            docker run --name hunspell-dict-asm_0.1.$CIRCLE_BUILD_NUM -t hunspell-dict-asm_0.1.$CIRCLE_BUILD_NUM /bin/bash -l -c "./build.sh -o /out/$BRANCH/$TARGET/hunspell.js"
             # Copy build output
             docker cp hunspell-dict-asm_0.1.$CIRCLE_BUILD_NUM:/out $ARTIFACT_DIR/
       - run:

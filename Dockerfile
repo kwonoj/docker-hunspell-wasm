@@ -13,7 +13,7 @@ RUN mkdir -p /out/$BRANCH/$TARGET && mkdir /hunspell-$TARGET
 COPY . /hunspell-$TARGET/
 
 # Copy build script and preprocess into hunspell directory
-COPY ./preprocessor* ./build.sh /hunspell-$TARGET/hunspell/
+COPY ./preprocessor.js ./build.sh /hunspell-$TARGET/hunspell/
 
 # Set workdir to hunspell
 WORKDIR /hunspell-$TARGET/hunspell
@@ -26,9 +26,4 @@ RUN echo running autoconf && autoreconf -vfi
 RUN echo running configure && emconfigure ./configure
 RUN echo running make && emmake make
 
-# Build target output. TARGET is runtime args.
-CMD echo building $TARGET && \
-    ./build.sh \
-    -o /out/$(git describe --tags)/$TARGET/hunspell.js \
-    --pre-js ./preprocessor-$TARGET.js \
-    $([[ $TARGET = "wasm" ]] && echo "-s WASM=1" || echo "")
+CMD echo dockerfile ready

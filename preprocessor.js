@@ -14,6 +14,9 @@ if (typeof module !== 'undefined' && module.exports) {
     Module["locateFile"] = function (fileName) {
       return require('path').join(__dirname, fileName);
     }
+
+    //___wasm_binary_name___ is being replaced build time via build.sh
+    //Module["wasmBinaryFile"] = require('path').join(__dirname, "___wasm_binary_name___.wasm");
   }
 
   // expose filesystem api

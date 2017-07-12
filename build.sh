@@ -1,3 +1,4 @@
+#!/bin/bash
 ### Simple script wraps invocation of emcc compiler, also prepares preprocessor
 ### for wasm binary lookup in node.js
 
@@ -6,7 +7,7 @@
 outputFilename=$(basename $2)
 
 # Injecting -o option's filename into each targets preprocessor.
-sed -i -e "s/___wasm_binary_name___/${outputFilename%.*}/g" ./preprocessor-wasm.js
+# sed -i -e "s/___wasm_binary_name___/${outputFilename%.*}/g" ./preprocessor.js
 
 echo "building binary for $@"
 
@@ -21,6 +22,7 @@ em++ \
 -s FORCE_FILESYSTEM=1 \
 -s EXPORTED_FUNCTIONS="['_Hunspell_create', '_Hunspell_destroy', '_Hunspell_spell', '_Hunspell_suggest', '_Hunspell_free_list']" \
 ./src/hunspell/.libs/libhunspell-1.6.a \
+--pre-js ./preprocessor.js \
 $@
 
 #--closure 1 \

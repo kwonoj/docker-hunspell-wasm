@@ -11,9 +11,19 @@
 //Hoisting it earlier than actual runtime bootstrapping in preprocessor allows to create preinit hooks.
 var Module = {};
 
-// expose filesystem api
+// expose filesystem api selectively
 Module["preRun"] = function () {
-  Module.FS = FS;
+  Module.FS = {
+    filesystems: FS.filesystems,
+    stat: FS.stat,
+    isDir: FS.isDir,
+    mkdir: FS.mkdir,
+    mount: FS.mount,
+    writeFile: FS.writeFile,
+    unlink: FS.unlink,
+    unmount: FS.unmount,
+    rmdir: FS.rmdir
+  };
 };
 
 //Caching init value to resolve subsequent init runtime immediately.

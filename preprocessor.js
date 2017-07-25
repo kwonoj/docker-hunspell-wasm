@@ -7,9 +7,8 @@
   * by default, it always look for current running directory.
   */
 
-//Object asm runtime will use.
-//Hoisting it earlier than actual runtime bootstrapping in preprocessor allows to create preinit hooks.
-var Module = {};
+// we are building with MODULARIZE option,
+// which pre-generates module object in preprocessor context - simply use it
 
 // expose filesystem api selectively
 Module["preRun"] = function () {

@@ -49,14 +49,15 @@ Module["initializeRuntime"] = function () {
   });
 }
 
-//using module.exports to detect node environment
-if (typeof module !== 'undefined' && module.exports) {
-  if (typeof __dirname === "string") {
-    Module["locateFile"] = function (fileName) {
-      return require('path').join(__dirname, fileName);
+//if it's overridden via ctor, do not set default
+if (!Module["locateFile"]) {
+  //using module.exports to detect node environment
+  if (typeof module !== 'undefined' && module.exports) {
+    if (typeof __dirname === "string") {
+      Module["locateFile"] = function (fileName) {
+        return require('path').join(__dirname, fileName);
+      }
     }
-
-    //___wasm_binary_name___ is being replaced build time via build.sh
-    //Module["wasmBinaryFile"] = require('path').join(__dirname, "___wasm_binary_name___.wasm");
   }
 }
+

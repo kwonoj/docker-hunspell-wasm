@@ -16,6 +16,7 @@ Module["preRun"] = function () {
     filesystems: FS.filesystems,
     stat: FS.stat,
     isDir: FS.isDir,
+    isFile: FS.isFile,
     mkdir: FS.mkdir,
     mount: FS.mount,
     writeFile: FS.writeFile,

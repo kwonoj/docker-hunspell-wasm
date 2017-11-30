@@ -6,9 +6,6 @@
 # as we'll pick up output filename from parameter
 outputFilename=$(basename $2)
 
-# Injecting -o option's filename into each targets preprocessor.
-# sed -i -e "s/___wasm_binary_name___/${outputFilename%.*}/g" ./preprocessor.js
-
 echo "building binary for $@"
 
 # invoke emscripten to build binary targets. Check Dockerfile for build targets.
@@ -19,6 +16,7 @@ em++ \
 -s NO_EXIT_RUNTIME=1 \
 -s ALLOW_MEMORY_GROWTH=1 \
 -s MODULARIZE=1 \
+-s SINGLE_FILE=1 \
 -s FORCE_FILESYSTEM=1 \
 -s EXPORTED_FUNCTIONS="['_Hunspell_create', '_Hunspell_destroy', '_Hunspell_spell', '_Hunspell_suggest', '_Hunspell_free_list']" \
 ./src/hunspell/.libs/libhunspell-1.6.a \

@@ -1,9 +1,6 @@
 version: 2
 jobs:
   build:
-    filters:
-      tags:
-        only: /.*/
     working_directory: ~/docker-hunspell-wasm
     docker:
       - image: circleci/golang:1.8.1
@@ -42,16 +39,19 @@ jobs:
       - store_artifacts:
           path: ~/build
           destination: build
-    deploy:
-      filters:
-        tags:
-          only: /.*/
-        branches:
-          ignore: /.*/
 
     deployment:
       release:
         tag: /.*?/
         commands: |
           go get github.com/tcnksm/ghr
-          ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME --replace `git describe --tags` ~/artifacts
+          ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME --replace `git describe --tags` ~/build
+
+workflows:
+  version: 2
+  default:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /.*/

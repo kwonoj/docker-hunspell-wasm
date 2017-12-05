@@ -62,7 +62,7 @@ jobs:
           name: Create Release
           command: |
             go get github.com/tcnksm/ghr
-            ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME --replace `git describe --tags` ~/build
+            ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME --replace $CIRCLE_TAG ~/build
 
 workflows:
   version: 2

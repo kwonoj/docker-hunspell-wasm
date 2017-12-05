@@ -18,7 +18,18 @@ em++ \
 -s MODULARIZE=1 \
 -s SINGLE_FILE=1 \
 -s FORCE_FILESYSTEM=1 \
--s EXPORTED_FUNCTIONS="['_Hunspell_create', '_Hunspell_destroy', '_Hunspell_spell', '_Hunspell_suggest', '_Hunspell_free_list']" \
+-s EXPORTED_FUNCTIONS="\
+[\
+  '_Hunspell_create', \
+  '_Hunspell_destroy', \
+  '_Hunspell_spell', \
+  '_Hunspell_suggest', \
+  '_Hunspell_free_list', \
+  '_Hunspell_add_dic', \
+  '_Hunspell_add', \
+  '_Hunspell_add_with_affix', \
+  '_Hunspell_remove' \
+]" \
 ./src/hunspell/.libs/libhunspell-1.6.a \
 --pre-js ./preprocessor.js \
 $@

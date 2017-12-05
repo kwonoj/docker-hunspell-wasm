@@ -7,7 +7,7 @@ ARG TARGET=""
 RUN echo building for $BRANCH
 
 # Setup output / build source path
-RUN mkdir -p /out/$BRANCH/$TARGET && mkdir /hunspell-$TARGET
+RUN mkdir -p /out && mkdir /hunspell-$TARGET
 
 # Copy source host
 COPY . /hunspell-$TARGET/

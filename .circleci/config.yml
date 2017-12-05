@@ -1,9 +1,12 @@
+defaults: &defaults
+  working_directory: ~/docker-hunspell-wasm
+  docker:
+  - image: circleci/golang:1.8.1
+
 version: 2
 jobs:
   build:
-    working_directory: ~/docker-hunspell-wasm
-    docker:
-      - image: circleci/golang:1.8.1
+    <<: *defaults
     steps:
       - setup_remote_docker
       - checkout
@@ -39,19 +42,32 @@ jobs:
       - store_artifacts:
           path: ~/build
           destination: build
+      - persist_to_workspace:
+          root: ~/build
+          paths:
+            - ./*
 
-    deployment:
-      release:
-        tag: /.*?/
-        commands: |
-          go get github.com/tcnksm/ghr
-          ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME --replace `git describe --tags` ~/build
+  github-release:
+    <<: *defaults
+    filters:
+    branch:
+      ignore: /.*/
+    tags:
+      only: /.*/
+    attach_workspace:
+      at: ~/build
+    steps:
+      - run:
+          name: Create release
+          command: |
+            go get github.com/tcnksm/ghr
+            ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME --replace `git describe --tags` ~/build
 
 workflows:
   version: 2
   default:
     jobs:
-      - build:
-          filters:
-            tags:
-              only: /.*/
+      - build
+      - github-release
+          requires:
+            - build

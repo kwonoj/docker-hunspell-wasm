@@ -1,3 +1,4 @@
+# Default configuration shared between jobs
 defaults: &defaults
   working_directory: ~/docker-hunspell-wasm
   docker:
@@ -5,6 +6,7 @@ defaults: &defaults
 
 version: 2
 jobs:
+  # Jobs for building wasm binary for hunspell
   build:
     <<: *defaults
     steps:
@@ -39,26 +41,25 @@ jobs:
             tar -zcvf ./hunspell-asm-$(echo $CIRCLE_SHA1 | cut -c -7).tar.gz out
             # Flatten file out path
             mv ./out/* ./ && rm -rf ./out
+      # Upload artifact into CircleCi artifacts
       - store_artifacts:
           path: ~/build
           destination: build
+      # Persist build results to share between different jobs
       - persist_to_workspace:
           root: ~/build
           paths:
             - ./*
 
+  # Jobs to create github release for tagged build
   release:
     <<: *defaults
-    filters:
-    branch:
-      ignore: /.*/
-    tags:
-      only: /.*/
+    # Acquire persisted build results
     attach_workspace:
       at: ~/build
     steps:
       - run:
-          name: Create release
+          name: Create Release
           command: |
             go get github.com/tcnksm/ghr
             ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME --replace `git describe --tags` ~/build
@@ -68,6 +69,12 @@ workflows:
   default:
     jobs:
       - build
-      - release
+      - release:
+          # Filter jobs to run on tag only
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /.*/
           requires:
             - build

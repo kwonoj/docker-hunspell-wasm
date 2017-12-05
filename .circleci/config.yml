@@ -47,7 +47,7 @@ jobs:
           paths:
             - ./*
 
-  github-release:
+  release:
     <<: *defaults
     filters:
     branch:
@@ -68,6 +68,6 @@ workflows:
   default:
     jobs:
       - build
-      - github-release
+      - release
           requires:
             - build

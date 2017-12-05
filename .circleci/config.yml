@@ -54,10 +54,10 @@ jobs:
   # Jobs to create github release for tagged build
   release:
     <<: *defaults
-    # Acquire persisted build results
-    attach_workspace:
-      at: ~/build
     steps:
+      # Acquire persisted build results
+      - attach_workspace:
+          at: ~/build
       - run:
           name: Create Release
           command: |

@@ -30,6 +30,7 @@ em++ \
   '_Hunspell_add_with_affix', \
   '_Hunspell_remove' \
 ]" \
+-s EXTRA_EXPORTED_RUNTIME_METHODS="['ccall', 'cwrap']" \
 ./src/hunspell/.libs/libhunspell-1.6.a \
 --pre-js ./preprocessor.js \
 $@

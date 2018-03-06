@@ -34,7 +34,6 @@ em++ \
 [\
   'cwrap', \
   'stringToUTF8', \
-  'Runtime', \
   'getValue', \
   'Pointer_stringify' \
 ]" \

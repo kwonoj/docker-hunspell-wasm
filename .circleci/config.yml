@@ -19,16 +19,28 @@ jobs:
              # generate build artifact folder
              mkdir -p ~/build
       - run:
-          name: Build wasm hunspell 1.6.1
+          name: Build docker image for hunspell 1.6.1 wasm
           command: |
             BRANCH=v1.6.1
             TARGET=wasm
             # Build docker image, specify commit sha of hunspell
             docker build -t hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM --build-arg BRANCH=$BRANCH --build-arg TARGET=$TARGET .
-            # Run built docker image, specify container name same as image name
-            docker run --name hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM -t hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM /bin/bash -l -c "./build.sh -o /out/hunspell.js -s WASM=1"
+      - run:
+          name: Build binary for browser
+          command: |
+            ENVIRONMENT=web
+            # Run built docker image
+            docker run --name hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM$ENVIRONMENT -t hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM /bin/bash -l -c "./build.sh -o /out/hunspell_web.js -s WASM=1 -s ENVIRONMENT=$ENVIRONMENT"
             # Copy build output
-            docker cp hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM:/out ~/build
+            docker cp hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM$ENVIRONMENT:/out ~/build
+      - run:
+          name: Build binary for node
+          command: |
+            ENVIRONMENT=node
+            # Run built docker image
+            docker run --name hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM$ENVIRONMENT -t hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM /bin/bash -l -c "./build.sh -o /out/hunspell_node.js -s WASM=1 -s ENVIRONMENT=$ENVIRONMENT"
+            # Copy build output
+            docker cp hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM$ENVIRONMENT:/out ~/build
       - run:
           working_directory: ~/build
           name: Copy artifacts
@@ -36,7 +48,8 @@ jobs:
             # File copied from docker container has root access only, modify permission
             sudo chmod -R go+wr ~/build
             # Generate hash
-            sha512sum ./out/hunspell.js > ./out/hunspell.js.sha512
+            sha512sum ./out/hunspell_web.js > ./out/hunspell_web.js.sha512
+            sha512sum ./out/hunspell_node.js > ./out/hunspell_node.js.sha512
             # Generate archive for convinience
             tar -zcvf ./hunspell-asm-$(echo $CIRCLE_SHA1 | cut -c -7).tar.gz out
             # Flatten file out path

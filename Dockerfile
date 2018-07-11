@@ -1,9 +1,10 @@
-FROM ojkwon/arch-emscripten:42db8f11-base
+FROM ojkwon/arch-emscripten:f3d0fe6b-base
 
 # Build time args
 ARG BRANCH=""
 ARG TARGET=""
 
+RUN emcc -v
 RUN echo building for $BRANCH
 
 # Setup output / build source path

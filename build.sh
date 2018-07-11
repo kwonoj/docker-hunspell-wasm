@@ -8,6 +8,25 @@ outputFilename=$(basename $2)
 
 echo "building binary for $@"
 
+# functions to be exported from hunspell
+HUNSPELL_EXPORT_FUNCTIONS="[\
+'_Hunspell_create',\
+'_Hunspell_destroy',\
+'_Hunspell_spell',\
+'_Hunspell_suggest',\
+'_Hunspell_free_list',\
+'_Hunspell_add_dic',\
+'_Hunspell_add',\
+'_Hunspell_remove',\
+'_Hunspell_add_with_affix']"
+
+# additional runtime helper from emscripten
+EXPORT_RUNTIME="[\
+'cwrap',\
+'stringToUTF8',\
+'getValue',\
+'Pointer_stringify']"
+
 # invoke emscripten to build binary targets. Check Dockerfile for build targets.
 em++ \
 -O3 \
@@ -17,26 +36,10 @@ em++ \
 -s ALLOW_MEMORY_GROWTH=1 \
 -s MODULARIZE=1 \
 -s SINGLE_FILE=1 \
+-s ASSERTIONS=1 \
 -s FORCE_FILESYSTEM=1 \
--s EXPORTED_FUNCTIONS="\
-[\
-  '_Hunspell_create', \
-  '_Hunspell_destroy', \
-  '_Hunspell_spell', \
-  '_Hunspell_suggest', \
-  '_Hunspell_free_list', \
-  '_Hunspell_add_dic', \
-  '_Hunspell_add', \
-  '_Hunspell_add_with_affix', \
-  '_Hunspell_remove' \
-]" \
--s EXPORTED_RUNTIME_METHODS="\
-[\
-  'cwrap', \
-  'stringToUTF8', \
-  'getValue', \
-  'Pointer_stringify' \
-]" \
+-s EXPORTED_FUNCTIONS="$HUNSPELL_EXPORT_FUNCTIONS" \
+-s EXTRA_EXPORTED_RUNTIME_METHODS="$EXPORT_RUNTIME" \
 ./src/hunspell/.libs/libhunspell-1.6.a \
 --pre-js ./preprocessor.js \
 $@

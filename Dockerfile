@@ -1,4 +1,4 @@
-FROM ojkwon/arch-emscripten:42db8f11-base
+FROM ojkwon/arch-emscripten:f3d0fe6b-base
 
 # Build time args
 ARG BRANCH=""
@@ -24,6 +24,6 @@ RUN git checkout $BRANCH && git show --summary
 # Configure & make via emscripten
 RUN echo running autoconf && autoreconf -vfi
 RUN echo running configure && emconfigure ./configure
-RUN echo running make && emmake make
+RUN echo running make && emcc -v && emmake make
 
 CMD echo dockerfile ready

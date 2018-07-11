@@ -30,7 +30,7 @@ em++ \
   '_Hunspell_add_with_affix', \
   '_Hunspell_remove' \
 ]" \
--s EXPORTED_RUNTIME_METHODS="\
+-s EXTRA_EXPORTED_RUNTIME_METHODS="\
 [\
   'cwrap', \
   'stringToUTF8', \

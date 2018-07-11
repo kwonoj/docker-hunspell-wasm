@@ -2,7 +2,7 @@
 defaults: &defaults
   working_directory: ~/docker-hunspell-wasm
   docker:
-  - image: circleci/golang:1.8.1
+  - image: circleci/golang:1.10.3-stretch-browsers
 
 version: 2
 jobs:

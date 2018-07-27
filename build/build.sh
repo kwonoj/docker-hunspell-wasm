@@ -25,7 +25,6 @@ EXPORT_RUNTIME="[\
 'cwrap',\
 'stringToUTF8',\
 'allocateUTF8', \
-'allocateUTF8OnStack', \
 'getValue',\
 'Pointer_stringify']"
 

@@ -13,11 +13,8 @@ jobs:
       - setup_remote_docker
       - checkout
       - run:
-          name: Init submodules
-          command: |
-             git submodule update --init --recursive
-             # generate build artifact folder
-             mkdir -p ~/build
+          name: Generate build artifact location
+          command: mkdir -p ~/build
       - run:
           name: Build docker image for hunspell 1.6.1 wasm
           command: |

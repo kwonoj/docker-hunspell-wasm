@@ -1,0 +1,1 @@
+This folder contains patch to hunspell (https://github.com/hunspell/hunspell) and other emscripten specific files to build with embind interface export.

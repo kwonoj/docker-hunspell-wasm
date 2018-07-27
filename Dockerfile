@@ -7,14 +7,14 @@ ARG TARGET=""
 RUN emcc -v
 RUN echo building for $BRANCH
 
-# Setup output / build source path
-RUN mkdir -p /out && mkdir /hunspell-$TARGET
+# Setup output path, checkout source
+RUN mkdir -p /out && git clone https://github.com/hunspell/hunspell.git /hunspell-$TARGET
 
-# Copy source host
+# Copy source from host
 COPY . /hunspell-$TARGET/
 
-# Copy build script and preprocess into hunspell directory
-COPY ./preprocessor.js ./build.sh /hunspell-$TARGET/hunspell/
+# Copy build script and preprocessor into hunspell directory
+COPY ./build/preprocessor.js ./build/build.sh /hunspell-$TARGET/hunspell/
 
 # Set workdir to hunspell
 WORKDIR /hunspell-$TARGET/hunspell

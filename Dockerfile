@@ -8,7 +8,7 @@ RUN emcc -v
 RUN echo building for $BRANCH
 
 # Setup output path, checkout source
-RUN mkdir -p /out && git clone https://github.com/hunspell/hunspell.git /hunspell-$TARGET
+RUN mkdir -p /out && git clone https://github.com/hunspell/hunspell.git /hunspell-$TARGET/hunspell
 
 # Copy source from host
 COPY . /hunspell-$TARGET/

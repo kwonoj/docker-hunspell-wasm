@@ -16,9 +16,9 @@ jobs:
           name: Generate build artifact location
           command: mkdir -p ~/build
       - run:
-          name: Build docker image for hunspell 1.6.1 wasm
+          name: Build docker image for hunspell 1.6.2 wasm
           command: |
-            BRANCH=v1.6.1
+            BRANCH=v1.6.2
             TARGET=wasm
             # Build docker image, specify commit sha of hunspell
             docker build -t hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM --build-arg BRANCH=$BRANCH --build-arg TARGET=$TARGET .

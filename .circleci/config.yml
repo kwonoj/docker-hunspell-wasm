@@ -27,7 +27,7 @@ jobs:
           command: |
             ENVIRONMENT=web
             # Run built docker image
-            docker run --name hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM$ENVIRONMENT -t hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM /bin/bash -l -c "./build.sh -o /out/hunspell_web.js -s WASM=1 -s ENVIRONMENT=$ENVIRONMENT"
+            docker run --name hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM$ENVIRONMENT -t hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM /bin/bash -l -c "./build.sh -o /out/hunspell_$ENVIRONMENT.js -s ENVIRONMENT=$ENVIRONMENT"
             # Copy build output
             docker cp hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM$ENVIRONMENT:/out ~/build
       - run:
@@ -35,7 +35,7 @@ jobs:
           command: |
             ENVIRONMENT=node
             # Run built docker image
-            docker run --name hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM$ENVIRONMENT -t hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM /bin/bash -l -c "./build.sh -o /out/hunspell_node.js -s WASM=1 -s ENVIRONMENT=$ENVIRONMENT"
+            docker run --name hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM$ENVIRONMENT -t hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM /bin/bash -l -c "./build.sh -o /out/hunspell_$ENVIRONMENT.js -s ENVIRONMENT=$ENVIRONMENT"
             # Copy build output
             docker cp hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM$ENVIRONMENT:/out ~/build
       - run:
@@ -45,8 +45,9 @@ jobs:
             # File copied from docker container has root access only, modify permission
             sudo chmod -R go+wr ~/build
             # Generate hash
-            sha512sum ./out/hunspell_web.js > ./out/hunspell_web.js.sha512
-            sha512sum ./out/hunspell_node.js > ./out/hunspell_node.js.sha512
+            for filename in ./out/*; do
+              sha512sum $filename > $filename.sha512
+            done
             # Generate archive for convinience
             tar -zcvf ./hunspell-asm-$(echo $CIRCLE_SHA1 | cut -c -7).tar.gz out
             # Flatten file out path

@@ -16,28 +16,26 @@ jobs:
           name: Generate build artifact location
           command: mkdir -p ~/build
       - run:
-          name: Build docker image for hunspell 1.6.2 wasm
+          name: Build docker image for hunspell 1.7.0
           command: |
-            BRANCH=v1.6.2
+            BRANCH=v1.7.0
             TARGET=wasm
             # Build docker image, specify commit sha of hunspell
             docker build -t hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM --build-arg BRANCH=$BRANCH --build-arg TARGET=$TARGET .
       - run:
-          name: Build binary for browser
+          name: Build wasm binary
           command: |
-            ENVIRONMENT=web
             # Run built docker image
-            docker run --name hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM$ENVIRONMENT -t hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM /bin/bash -l -c "./build.sh -o /out/hunspell_$ENVIRONMENT.js -s ENVIRONMENT=$ENVIRONMENT"
+            docker run --name hunspell-wasm -t hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM /bin/bash -l -c "./build.sh -o /out/hunspell.js"
             # Copy build output
-            docker cp hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM$ENVIRONMENT:/out ~/build
+            docker cp hunspell-wasm:/out ~/build
       - run:
-          name: Build binary for node
+          name: Build asm.js binary
           command: |
-            ENVIRONMENT=node
             # Run built docker image
-            docker run --name hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM$ENVIRONMENT -t hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM /bin/bash -l -c "./build.sh -o /out/hunspell_$ENVIRONMENT.js -s ENVIRONMENT=$ENVIRONMENT"
+            docker run --name hunspell-asm -t hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM /bin/bash -l -c "./build.sh -o /out/hunspell-asm.js -s WASM=0 -s SINGLE_FILE=1 -s DYNAMIC_EXECUTION=0"
             # Copy build output
-            docker cp hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM$ENVIRONMENT:/out ~/build
+            docker cp hunspell-asm:/out ~/build
       - run:
           working_directory: ~/build
           name: Copy artifacts

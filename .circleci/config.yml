@@ -33,7 +33,7 @@ jobs:
           name: Build asm.js binary
           command: |
             # Run built docker image
-            docker run --name hunspell-asm -t hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM /bin/bash -l -c "./build.sh -o /out/hunspell-asm.js -s WASM=0 -s SINGLE_FILE=1"
+            docker run --name hunspell-asm -t hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM /bin/bash -l -c "./build.sh -o /out/hunspell-asm.js -s WASM=0"
             # Copy build output
             docker cp hunspell-asm:/out ~/build
       - run:

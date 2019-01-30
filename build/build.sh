@@ -38,10 +38,9 @@ em++ \
 -s ASSERTIONS=1 \
 -s FORCE_FILESYSTEM=1 \
 -s DYNAMIC_EXECUTION=0 \
+-s SINGLE_FILE=1 \
 -s EXPORTED_FUNCTIONS="$HUNSPELL_EXPORT_FUNCTIONS" \
 -s EXTRA_EXPORTED_RUNTIME_METHODS="$EXPORT_RUNTIME" \
 ./src/hunspell/.libs/libhunspell-1.6.a \
 --pre-js ./preprocessor.js \
 $@
-
-#--closure 1 \

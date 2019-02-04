@@ -16,9 +16,9 @@ jobs:
           name: Generate build artifact location
           command: mkdir -p ~/build
       - run:
-          name: Build docker image for hunspell 1.6.2
+          name: Build docker image for hunspell 1.7.0
           command: |
-            BRANCH=v1.6.2
+            BRANCH=v1.7.0
             TARGET=wasm
             # Build docker image, specify commit sha of hunspell
             docker build -t hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM --build-arg BRANCH=$BRANCH --build-arg TARGET=$TARGET .
@@ -44,7 +44,7 @@ jobs:
             sudo chmod -R go+wr ~/build
             # https://github.com/kwonoj/docker-hunspell-wasm/issues/63
             for filename in ./out/*.js; do
-              sed -i 's/throw new Error("Module.ENVIRONMENT has been deprecated. To force the environment, use the ENVIRONMENT compile-time option (for example, -s ENVIRONMENT=web or -s ENVIRONMENT=node)")/const ISNODE = Module["ENVIRONMENT"] === "NODE";ENVIRONMENT_IS_NODE = ISNODE;ENVIRONMENT_IS_WEB = !ISNODE;/g' $filename
+              sed -i 's/throw new Error("Module.ENVIRONMENT has been deprecated. To force the environment, use the ENVIRONMENT compile-time option (for example, -s ENVIRONMENT=web or -s ENVIRONMENT=node)")/const ENV_OVERRIDE = Module["ENVIRONMENT"];ENVIRONMENT_IS_NODE = ENV_OVERRIDE === "NODE";ENVIRONMENT_IS_WEB = ENV_OVERRIDE === "WEB";ENVIRONMENT_IS_WORKER = ENV_OVERRIDE === "WORKER";/g' $filename
             done
 
             # Generate hash

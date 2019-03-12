@@ -26,7 +26,7 @@ EXPORT_RUNTIME="[\
 'stringToUTF8',\
 'allocateUTF8', \
 'getValue',\
-'Pointer_stringify']"
+'UTF8ToString']"
 
 # invoke emscripten to build binary targets. Check Dockerfile for build targets.
 em++ \

@@ -31,7 +31,7 @@ EXPORT_RUNTIME="[\
 # invoke emscripten to build binary targets. Check Dockerfile for build targets.
 em++ \
 -O2 \
--s ENVIRONMENT=web \
+-s ENVIRONMENT=web,node,worker \
 -s NO_EXIT_RUNTIME=1 \
 -s ALLOW_MEMORY_GROWTH=1 \
 -s MODULARIZE=1 \
@@ -41,5 +41,4 @@ em++ \
 -s EXPORTED_FUNCTIONS="$HUNSPELL_EXPORT_FUNCTIONS" \
 -s EXTRA_EXPORTED_RUNTIME_METHODS="$EXPORT_RUNTIME" \
 ./src/hunspell/.libs/libhunspell-1.6.a \
---pre-js ./preprocessor.js \
 $@

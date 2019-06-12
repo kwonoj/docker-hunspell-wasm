@@ -21,14 +21,23 @@ jobs:
             BRANCH=v1.6.2
             TARGET=wasm
             # Build docker image, specify commit sha of hunspell
-            docker build -t hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM --build-arg BRANCH=$BRANCH --build-arg TARGET=$TARGET .
+            docker build -t hunspell-wasm-$CIRCLE_BUILD_NUM --build-arg BRANCH=$BRANCH --build-arg TARGET=$TARGET .
       - run:
-          name: Build wasm binary
+          name: Build wasm binary for node environment
           command: |
+            ENVIRONMENT=node
             # Run built docker image
-            docker run --name hunspell-wasm -t hunspell-dict-wasm_0.1.$CIRCLE_BUILD_NUM /bin/bash -l -c "./build.sh -o /out/hunspell.js"
+            docker run --name $CIRCLE_BUILD_NUM$ENVIRONMENT -t hunspell-wasm-$CIRCLE_BUILD_NUM /bin/bash -l -c "./build.sh -o /out/hunspell_$ENVIRONMENT.js -s ENVIRONMENT=$ENVIRONMENT"
             # Copy build output
-            docker cp hunspell-wasm:/out ~/build
+            docker cp $CIRCLE_BUILD_NUM$ENVIRONMENT:/out ~/build
+      - run:
+          name: Build wasm binary for web environment
+          command: |
+            ENVIRONMENT=web,worker
+            # Run built docker image
+            docker run --name $CIRCLE_BUILD_NUM-web -t hunspell-wasm-$CIRCLE_BUILD_NUM /bin/bash -l -c "./build.sh -o /out/hunspell_browser.js -s ENVIRONMENT=$ENVIRONMENT"
+            # Copy build output
+            docker cp $CIRCLE_BUILD_NUM-web:/out ~/build
       - run:
           working_directory: ~/build
           name: Copy artifacts

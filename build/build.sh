@@ -41,4 +41,5 @@ em++ \
 -s EXPORTED_FUNCTIONS="$HUNSPELL_EXPORT_FUNCTIONS" \
 -s EXTRA_EXPORTED_RUNTIME_METHODS="$EXPORT_RUNTIME" \
 ./src/hunspell/.libs/libhunspell-1.6.a \
+--pre-js ./preprocessor.js \
 $@

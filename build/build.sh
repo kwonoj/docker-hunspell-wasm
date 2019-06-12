@@ -31,12 +31,11 @@ EXPORT_RUNTIME="[\
 # invoke emscripten to build binary targets. Check Dockerfile for build targets.
 em++ \
 -O2 \
--s ENVIRONMENT=web,node \
+-s ENVIRONMENT=web \
 -s NO_EXIT_RUNTIME=1 \
 -s ALLOW_MEMORY_GROWTH=1 \
 -s MODULARIZE=1 \
 -s ASSERTIONS=1 \
--s FORCE_FILESYSTEM=1 \
 -s DYNAMIC_EXECUTION=0 \
 -s SINGLE_FILE=1 \
 -s EXPORTED_FUNCTIONS="$HUNSPELL_EXPORT_FUNCTIONS" \

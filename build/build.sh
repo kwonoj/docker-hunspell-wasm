@@ -36,9 +36,12 @@ em++ \
 -s MODULARIZE=1 \
 -s ASSERTIONS=1 \
 -s DYNAMIC_EXECUTION=0 \
+-s DISABLE_EXCEPTION_CATCHING=0 \
+-s STRICT=1 \
+-s ERROR_ON_MISSING_LIBRARIES=1 \
 -s SINGLE_FILE=1 \
 -s EXPORTED_FUNCTIONS="$HUNSPELL_EXPORT_FUNCTIONS" \
 -s EXTRA_EXPORTED_RUNTIME_METHODS="$EXPORT_RUNTIME" \
-./src/hunspell/.libs/libhunspell-1.6.a \
+./src/hunspell/.libs/libhunspell-1.7.a \
 --pre-js ./preprocessor.js \
 $@

@@ -30,7 +30,7 @@ EXPORT_RUNTIME="[\
 
 # invoke emscripten to build binary targets. Check Dockerfile for build targets.
 em++ \
--O0 \
+-O2 \
 -s NO_EXIT_RUNTIME=1 \
 -s ALLOW_MEMORY_GROWTH=1 \
 -s MODULARIZE=1 \

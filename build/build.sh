@@ -39,6 +39,6 @@ em++ \
 -s SINGLE_FILE=1 \
 -s EXPORTED_FUNCTIONS="$HUNSPELL_EXPORT_FUNCTIONS" \
 -s EXTRA_EXPORTED_RUNTIME_METHODS="$EXPORT_RUNTIME" \
-./src/hunspell/.libs/libhunspell-1.6.a \
+./src/hunspell/.libs/libhunspell-1.7.a \
 --pre-js ./preprocessor.js \
 $@

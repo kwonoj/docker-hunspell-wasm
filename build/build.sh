@@ -13,6 +13,7 @@ HUNSPELL_EXPORT_FUNCTIONS="[\
 '_Hunspell_create',\
 '_Hunspell_destroy',\
 '_Hunspell_spell',\
+'_Hunspell_stem',\
 '_Hunspell_suggest',\
 '_Hunspell_free_list',\
 '_Hunspell_add_dic',\
